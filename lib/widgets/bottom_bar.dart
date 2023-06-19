@@ -43,7 +43,7 @@ class _bottom_barState extends State<bottom_bar> {
         ),
 
         bottomNavigationBar: Container(
-          height: 70,
+          height: MediaQuery.of(context).size.height * 0.1,
           decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(

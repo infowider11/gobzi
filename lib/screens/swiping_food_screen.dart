@@ -53,7 +53,7 @@ class _swiping_food_screenState extends State<swiping_food_screen> {
 
 
                       Container(
-                        height: isSmallDevice(context) ? MediaQuery.of(context).size.height/1.52 : MediaQuery.of(context).size.height/1.45,
+                        height: isSmallDevice(context) ? MediaQuery.of(context).size.height/1.52 : MediaQuery.of(context).size.height/1.47,
                         width: MediaQuery.of(context).size.width/1.1,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),

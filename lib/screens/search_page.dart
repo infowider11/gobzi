@@ -158,7 +158,7 @@ List searchList = [
                       crossAxisCount:  2,
                       mainAxisSpacing: 10,
                       crossAxisSpacing: 15,
-                      childAspectRatio: 0.82,
+                      childAspectRatio: 0.81,
                     ),
                     itemBuilder: (BuildContext context, int index) {
                       if(searchList[index]['title'].toLowerCase().contains(search.text) ||

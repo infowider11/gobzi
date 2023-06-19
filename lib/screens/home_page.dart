@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:swiping_card_deck/swiping_card_deck.dart';
 import '../constants/colorsmodal.dart';
 import '../constants/sized_box.dart';
+import '../functions/responsive.dart';
 
 
 
@@ -208,7 +209,9 @@ final double width = MediaQuery.of(context).size.width;
                           ],
                         ),
                       ),
-                      vSizedBox10,
+
+                      if(isSmallDevice(context))
+                      SizedBox(height: MediaQuery.of(context).size.height* 0.01,),
 
                       Expanded(
                         child: TabBarView(
