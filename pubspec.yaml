@@ -1,0 +1,47 @@
+name: gobzi
+description: A new Flutter project.
+
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=2.19.6 <3.0.0'
+
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+
+  cupertino_icons: ^1.0.2
+  provider: ^6.0.5
+  shared_preferences: ^2.1.1
+  buttons_tabbar: ^1.3.6
+  carousel_slider: ^4.1.1
+  dotted_line: ^3.1.0
+  fluttertoast: ^8.1.1
+  image_picker: ^0.8.7+5
+  swiping_card_deck: ^1.3.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+
+  flutter_lints: ^2.0.0
+
+flutter:
+
+
+  uses-material-design: true
+
+
+  assets:
+    - assets/images/
+    - assets/fonts/
+
+  fonts:
+    - family: poppins
+      fonts:
+        - asset: assets/fonts/Poppins-Regular.ttf
+
