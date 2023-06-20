@@ -9,7 +9,7 @@ import 'package:gobzi/screens/swiping_food_screen.dart';
 import 'package:gobzi/screens/swiping_promo_screen.dart';
 import 'package:gobzi/widgets/CustomTexts.dart';
 import 'package:provider/provider.dart';
-import 'package:swiping_card_deck/swiping_card_deck.dart';
+import 'package:swipe_cards/swipe_cards.dart';
 import '../constants/colorsmodal.dart';
 import '../constants/sized_box.dart';
 import '../functions/responsive.dart';
@@ -28,6 +28,7 @@ class _home_pageState extends State<home_page> with SingleTickerProviderStateMix
 
   bool isEvent = true;
   bool isDeal = false;
+  List<SwipeItem> _swipeItems = <SwipeItem>[];
   List swipeDeals = [
     {'image':MyImages.food2, 'name': "Scotiabank Arena", 'location': '5.2 kilometres away', },
     {'image':MyImages.food7,  'name': "Marble Slab", 'location': '4.2 kilometres away', },
@@ -37,7 +38,7 @@ class _home_pageState extends State<home_page> with SingleTickerProviderStateMix
     {'image':MyImages.food6,  'name': "Marble Slab", 'location': '6.2 kilometres away', },
   ];
   late TabController tabController;
-
+  MatchEngine? _matchEngine;
 
 
   @override
@@ -45,6 +46,11 @@ class _home_pageState extends State<home_page> with SingleTickerProviderStateMix
     super.initState();
     tabController = TabController(length: 3, vsync: this, initialIndex: 1);
     tabController.addListener(_handleTabChange);
+
+    for (int i = 0; i < swipeDeals.length; i++)
+    _swipeItems.add(SwipeItem(content: swipeDeals[i]));
+
+    _matchEngine = MatchEngine(swipeItems: _swipeItems);
   }
 
   void _handleTabChange() {
@@ -157,60 +163,51 @@ final double width = MediaQuery.of(context).size.width;
                   child: Column(
                     children: <Widget>[
                       SizedBox(
-                        width: MediaQuery.of(context).size.width/1.03,
+                        width: MediaQuery.of(context).size.width/1.07,
                         child: TabBar(
                           controller: tabController,
                           indicatorColor: color.whiteColor,
+                          indicatorSize: TabBarIndicatorSize.label,
+                          labelPadding: EdgeInsets.symmetric(horizontal: 6),
                           onTap: (index){
                            index = tabController.index;
                            print("tab===${tabController.index}");
                            setState(() {});
                           },
                           tabs: [
-
                             Container(
-                                width: width * 0.25,
+                                height: 45,
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
                                   color: tabController.index==0 ? color.primaryColor : color.whiteColor,
                                     border: Border.all(color: color.boxBorderColor),
                                     borderRadius: BorderRadius.circular(5)
                                 ),
-                                child: Padding(
-                                  padding: const EdgeInsets.fromLTRB(17,10,17,10),
-                                  child: ParagraphText("Food", color: tabController.index==0 ? color.whiteColor : color.primaryTextColor,),
-                                )),
+                                child: ParagraphText("Food", color: tabController.index==0 ? color.whiteColor : color.primaryTextColor,)),
 
                             Container(
-                                width: width * 0.25,
+                                height: 45,
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
                                     color: tabController.index==1 ? color.primaryColor : color.whiteColor,
                                     border: Border.all(color: color.boxBorderColor),
                                     borderRadius: BorderRadius.circular(5)
                                 ),
-                                child: Padding(
-                                  padding: const EdgeInsets.fromLTRB(17,10,17,10),
-                                  child: ParagraphText("Events", color: tabController.index==1 ? color.whiteColor : color.primaryTextColor,),
-                                )),
+                                child: ParagraphText("Events", color: tabController.index==1 ? color.whiteColor : color.primaryTextColor,)),
 
                             Container(
-                                width: width * 0.25,
+                                height: 45,
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
                                     color: tabController.index==2 ? color.primaryColor : color.whiteColor,
                                     border: Border.all(color: color.boxBorderColor),
                                   borderRadius: BorderRadius.circular(5)
                                 ),
-                                child: Padding(
-                                  padding: const EdgeInsets.fromLTRB(17,10,17,10),
-                                  child: ParagraphText("Promos", color: tabController.index==2 ? color.whiteColor : color.primaryTextColor,),
-                                )),
+                                child: ParagraphText("Promos", color: tabController.index==2 ? color.whiteColor : color.primaryTextColor,)),
                           ],
                         ),
                       ),
 
-                      if(isSmallDevice(context))
                       SizedBox(height: MediaQuery.of(context).size.height* 0.01,),
 
                       Expanded(
@@ -239,152 +236,79 @@ final double width = MediaQuery.of(context).size.width;
                     if(swipeDeals.length != 0)
                       vSizedBox10,
 
-
-                    swipeDeals.length == 0?
                     Container(
-                      height: MediaQuery.of(context).size.height/1.5,
-                      alignment: Alignment.center,
-                      child: ParagraphText('No Deal Present'),):
-                    SingleChildScrollView(
-                      child: SwipingCardDeck(
-                        cardDeck: <Card>[
-                          for (int index = 0; index < swipeDeals.length; index++)
-                            Card(
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                                elevation: 0,
-                                child: GestureDetector(
-                                  onTap: (){
-                                    // push(context: context, screen: event_details());
-                                  },
-                                  child: Stack(
-                                    children: [
-                                      ///carousel slider
-                                      // Padding(
-                                      //   padding: const EdgeInsets.only(bottom: 50),
-                                      //   child: CarouselSlider(
-                                      //     options: CarouselOptions(
-                                      //       height:  520,
-                                      //       viewportFraction:  0.9,
-                                      //       enableInfiniteScroll: false,
-                                      //       enlargeCenterPage: true,
-                                      //       aspectRatio: 16 / 9,
-                                      //       disableCenter: false,
-                                      //       onPageChanged: (index, reason) {
-                                      //         setState(() {
-                                      //           currentIndex = index;
-                                      //         });
-                                      //       },
-                                      //     ),
-                                      //     items: eventLists.map((plan) {
-                                      //       return Container(
-                                      //         child: ClipRRect(
-                                      //           borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                                      //           child: Image.asset(
-                                      //             plan,
-                                      //             fit: BoxFit.cover,
-                                      //             width: 1000, // Adjust the width as needed
-                                      //           ),
-                                      //         ),
-                                      //       );
-                                      //     }).toList(),
-                                      //   ),
-                                      // ),
-                                      // Positioned(
-                                      //   bottom: 140,
-                                      //   left: MediaQuery.of(context).size.width/2.3,
-                                      //   child: Row(
-                                      //     mainAxisAlignment: MainAxisAlignment.center,
-                                      //     children: eventLists.map((item) {
-                                      //       int index = eventLists.indexOf(item);
-                                      //       return Container(
-                                      //         width: 8.0,
-                                      //         height: 8.0,
-                                      //         margin: EdgeInsets.symmetric(horizontal: 4.0),
-                                      //         decoration: BoxDecoration(
-                                      //           shape: BoxShape.circle,
-                                      //           color: currentIndex == index ? color.whiteColor : color.greyColor,
-                                      //         ),
-                                      //       );
-                                      //     }).toList(),
-                                      //   ),
-                                      // ),
+                      height: MediaQuery.of(context).size.height/1.45,
+                      child: SwipeCards(
+                        matchEngine: _matchEngine!,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Card(
+                              child:Stack(
+                                children: [
+                                  Container(
+                                    height: MediaQuery.of(context).size.height/1.45,
+                                    width: MediaQuery.of(context).size.width/1.1,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
 
-                                      Container(
-                                        height: MediaQuery.of(context).size.height/1.45,
-                                        width: MediaQuery.of(context).size.width/1.1,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(10),
+                                        child: Image.asset(swipeDeals[index]['image'], fit: BoxFit.cover,)),
+                                  ),
+                                  Positioned(
+                                    bottom: 0,
+                                    left: 0,
+                                    child: Container(
+                                      height: 70,
+                                      width: MediaQuery.of(context).size.width/1.1,
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+                                          color: color.whiteColor.withOpacity(0.9)
+                                      ),
+                                    ),
+                                  ),
+                                  Positioned(
+                                    bottom: 5,
+                                    left: 10,
+                                    child: Row(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        ClipRRect(
+                                            borderRadius: BorderRadius.circular(100),
+                                            child: Image.asset(MyImages.pizza_logo, height: 55,)),
 
-                                        ),
-                                        child: ClipRRect(
-                                            borderRadius: BorderRadius.circular(10),
-                                            child: Image.asset(swipeDeals[index]['image'], fit: BoxFit.cover,)),
-                                      ),
-                                      Positioned(
-                                        bottom: 0,
-                                        left: 0,
-                                        child: Container(
-                                          height: 70,
-                                          width: MediaQuery.of(context).size.width/1.1,
-                                          decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30)),
-                                              color: color.whiteColor.withOpacity(0.9)
-                                          ),
-                                        ),
-                                      ),
-                                      Positioned(
-                                        bottom: 5,
-                                        left: 10,
-                                        child: Row(
-                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                        hSizedBox10,
+
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
-                                            ClipRRect(
-                                                borderRadius: BorderRadius.circular(100),
-                                                child: Image.asset(MyImages.pizza_logo, height: 55,)),
-
-                                            hSizedBox10,
-
-                                            Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                ParagraphText(swipeDeals[index]['name'], fontSize: 16, fontWeight: FontWeight.w600, color: color.primaryColor,),
-                                                ParagraphText(swipeDeals[index]['location'], fontSize: 13, fontWeight: FontWeight.w400, color: color.greyTextColor,),
-                                              ],
-                                            ),
-
-                                            hSizedBox60,
-
-                                            Icon(CupertinoIcons.heart_fill, color: color.greyColor,),
-                                            hSizedBox10,
-                                            Icon(Icons.info_outline, color: color.greyColor,)
+                                            ParagraphText(swipeDeals[index]['name'], fontSize: 16, fontWeight: FontWeight.w600, color: color.primaryColor,),
+                                            ParagraphText(swipeDeals[index]['location'], fontSize: 13, fontWeight: FontWeight.w400, color: color.greyTextColor,),
                                           ],
                                         ),
-                                      )
 
-                                    ],
-                                  ),
-                                )
-                            ),
-                        ],
-                        onDeckEmpty: () {
-                          print("Card deck empty");
+                                        hSizedBox60,
 
+                                        Icon(CupertinoIcons.heart_fill, color: color.greyColor,),
+                                        hSizedBox10,
+                                        Icon(Icons.info_outline, color: color.greyColor,)
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              )
+                          );
                         },
-                        onLeftSwipe: (Card card) {
-                          print('left swiped');
-                          swipeDeals.removeAt(0);
-                          setState(() {});
+                        leftSwipeAllowed: true,
+                        rightSwipeAllowed: true,
+                        upSwipeAllowed: true,
+                        fillSpace: true,
+                        onStackFinished: () {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text("No Deals Present"),
+                            duration: Duration(milliseconds: 500),
+                          ));
                         },
-
-                        onRightSwipe: (Card card) {
-                          print('right swiped');
-                          swipeDeals.removeAt(0);
-                          setState(() {});
-                        },
-                        swipeThreshold: MediaQuery.of(context).size.width / 2,
-                        minimumVelocity: 1000,
-                        cardWidth: 340,
-                        swipeAnimationDuration: const Duration(milliseconds: 500),
                       ),
                     ),
                   ],
