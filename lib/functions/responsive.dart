@@ -6,7 +6,7 @@ enum DeviceSize {
 }
 
 DeviceSize getDeviceSize(BuildContext context){
-  if(MediaQuery.of(context).size.height <= 680){
+  if(MediaQuery.of(context).size.height <= 735){
         return DeviceSize.small;
   }
   else{
