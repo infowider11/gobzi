@@ -180,7 +180,7 @@ final double width = MediaQuery.of(context).size.width;
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
                                   color: tabController.index==0 ? color.primaryColor : color.whiteColor,
-                                    border: Border.all(color: color.boxBorderColor),
+                                    border: Border.all(color: tabController.index==0 ? color.primaryColor : color.boxBorderColor),
                                     borderRadius: BorderRadius.circular(5)
                                 ),
                                 child: ParagraphText("Food", color: tabController.index==0 ? color.whiteColor : color.primaryTextColor,)),
@@ -190,7 +190,7 @@ final double width = MediaQuery.of(context).size.width;
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
                                     color: tabController.index==1 ? color.primaryColor : color.whiteColor,
-                                    border: Border.all(color: color.boxBorderColor),
+                                    border: Border.all(color: tabController.index==1 ? color.primaryColor : color.boxBorderColor),
                                     borderRadius: BorderRadius.circular(5)
                                 ),
                                 child: ParagraphText("Events", color: tabController.index==1 ? color.whiteColor : color.primaryTextColor,)),
@@ -200,7 +200,7 @@ final double width = MediaQuery.of(context).size.width;
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
                                     color: tabController.index==2 ? color.primaryColor : color.whiteColor,
-                                    border: Border.all(color: color.boxBorderColor),
+                                    border: Border.all(color: tabController.index==2 ? color.primaryColor : color.boxBorderColor),
                                   borderRadius: BorderRadius.circular(5)
                                 ),
                                 child: ParagraphText("Promos", color: tabController.index==2 ? color.whiteColor : color.primaryTextColor,)),
@@ -241,68 +241,63 @@ final double width = MediaQuery.of(context).size.width;
                       child: SwipeCards(
                         matchEngine: _matchEngine!,
                         itemBuilder: (BuildContext context, int index) {
-                          return Card(
-                              child:Stack(
-                                children: [
-                                  Container(
-                                    height: MediaQuery.of(context).size.height/1.45,
-                                    width: MediaQuery.of(context).size.width/1.1,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
+                          return Stack(
+                            children: [
+                              Container(
+                                height: MediaQuery.of(context).size.height/1.45,
+                                width: MediaQuery.of(context).size.width/1.1,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
 
-                                    ),
-                                    child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(10),
-                                        child: Image.asset(swipeDeals[index]['image'], fit: BoxFit.cover,)),
+                                ),
+                                child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: Image.asset(swipeDeals[index]['image'], fit: BoxFit.cover,)),
+                              ),
+                              Positioned(
+                                bottom: 0,
+                                left: 0,
+                                child: Container(
+                                  height: 70,
+                                  width: MediaQuery.of(context).size.width/1.1,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+                                      color: color.whiteColor.withOpacity(0.9)
                                   ),
-                                  Positioned(
-                                    bottom: 0,
-                                    left: 0,
-                                    child: Container(
-                                      height: 70,
-                                      width: MediaQuery.of(context).size.width/1.1,
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30)),
-                                          color: color.whiteColor.withOpacity(0.9)
-                                      ),
-                                    ),
-                                  ),
-                                  Positioned(
-                                    bottom: 5,
-                                    left: 10,
-                                    child: Row(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                ),
+                              ),
+                              Positioned(
+                                bottom: 5,
+                                left: 10,
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    ClipRRect(
+                                        borderRadius: BorderRadius.circular(100),
+                                        child: Image.asset(MyImages.pizza_logo, height: 55,)),
+
+                                    hSizedBox10,
+
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        ClipRRect(
-                                            borderRadius: BorderRadius.circular(100),
-                                            child: Image.asset(MyImages.pizza_logo, height: 55,)),
-
-                                        hSizedBox10,
-
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            ParagraphText(swipeDeals[index]['name'], fontSize: 16, fontWeight: FontWeight.w600, color: color.primaryColor,),
-                                            ParagraphText(swipeDeals[index]['location'], fontSize: 13, fontWeight: FontWeight.w400, color: color.greyTextColor,),
-                                          ],
-                                        ),
-
-                                        hSizedBox60,
-
-                                        Icon(CupertinoIcons.heart_fill, color: color.greyColor,),
-                                        hSizedBox10,
-                                        Icon(Icons.info_outline, color: color.greyColor,)
+                                        ParagraphText(swipeDeals[index]['name'], fontSize: 16, fontWeight: FontWeight.w600, color: color.primaryColor,),
+                                        ParagraphText(swipeDeals[index]['location'], fontSize: 13, fontWeight: FontWeight.w400, color: color.greyTextColor,),
                                       ],
                                     ),
-                                  )
-                                ],
+
+                                    hSizedBox60,
+
+                                    Icon(CupertinoIcons.heart_fill, color: color.greyColor,),
+                                    hSizedBox10,
+                                    Icon(Icons.info_outline, color: color.greyColor,)
+                                  ],
+                                ),
                               )
+                            ],
                           );
                         },
-                        leftSwipeAllowed: true,
-                        rightSwipeAllowed: true,
-                        upSwipeAllowed: true,
-                        fillSpace: true,
+                        upSwipeAllowed: false,
                         onStackFinished: () {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             content: Text("No Deals Present"),
