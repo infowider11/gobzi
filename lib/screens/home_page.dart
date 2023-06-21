@@ -41,6 +41,17 @@ class _home_pageState extends State<home_page> with SingleTickerProviderStateMix
   MatchEngine? _matchEngine;
 
 
+  void handleVerticalDragUpdate(DragUpdateDetails details) {
+    setState(() {
+      final double verticalDelta = details.delta.dy;
+
+      if (verticalDelta < 0) {
+        print("can't scroll vertical");
+        return;
+      }
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -238,72 +249,76 @@ final double width = MediaQuery.of(context).size.width;
 
                     Container(
                       height: MediaQuery.of(context).size.height/1.45,
-                      child: SwipeCards(
-                        matchEngine: _matchEngine!,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Stack(
-                            children: [
-                              Container(
-                                height: MediaQuery.of(context).size.height/1.45,
-                                width: MediaQuery.of(context).size.width/1.1,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-
-                                ),
-                                child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(10),
-                                    child: Image.asset(swipeDeals[index]['image'], fit: BoxFit.cover,)),
-                              ),
-                              Positioned(
-                                bottom: 0,
-                                left: 0,
-                                child: Container(
-                                  height: 70,
+                      child: GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onVerticalDragUpdate: handleVerticalDragUpdate,
+                        child: SwipeCards(
+                          matchEngine: _matchEngine!,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Stack(
+                              children: [
+                                Container(
+                                  height: MediaQuery.of(context).size.height/1.45,
                                   width: MediaQuery.of(context).size.width/1.1,
                                   decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30)),
-                                      color: color.whiteColor.withOpacity(0.9)
+                                    borderRadius: BorderRadius.circular(10),
+
+                                  ),
+                                  child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: Image.asset(swipeDeals[index]['image'], fit: BoxFit.cover,)),
+                                ),
+                                Positioned(
+                                  bottom: 0,
+                                  left: 0,
+                                  child: Container(
+                                    height: 70,
+                                    width: MediaQuery.of(context).size.width/1.1,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+                                        color: color.whiteColor.withOpacity(0.9)
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Positioned(
-                                bottom: 5,
-                                left: 10,
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    ClipRRect(
-                                        borderRadius: BorderRadius.circular(100),
-                                        child: Image.asset(MyImages.pizza_logo, height: 55,)),
+                                Positioned(
+                                  bottom: 5,
+                                  left: 10,
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      ClipRRect(
+                                          borderRadius: BorderRadius.circular(100),
+                                          child: Image.asset(MyImages.pizza_logo, height: 55,)),
 
-                                    hSizedBox10,
+                                      hSizedBox10,
 
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        ParagraphText(swipeDeals[index]['name'], fontSize: 16, fontWeight: FontWeight.w600, color: color.primaryColor,),
-                                        ParagraphText(swipeDeals[index]['location'], fontSize: 13, fontWeight: FontWeight.w400, color: color.greyTextColor,),
-                                      ],
-                                    ),
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          ParagraphText(swipeDeals[index]['name'], fontSize: 16, fontWeight: FontWeight.w600, color: color.primaryColor,),
+                                          ParagraphText(swipeDeals[index]['location'], fontSize: 13, fontWeight: FontWeight.w400, color: color.greyTextColor,),
+                                        ],
+                                      ),
 
-                                    hSizedBox60,
+                                      hSizedBox60,
 
-                                    Icon(CupertinoIcons.heart_fill, color: color.greyColor,),
-                                    hSizedBox10,
-                                    Icon(Icons.info_outline, color: color.greyColor,)
-                                  ],
-                                ),
-                              )
-                            ],
-                          );
-                        },
-                        upSwipeAllowed: false,
-                        onStackFinished: () {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text("No Deals Present"),
-                            duration: Duration(milliseconds: 500),
-                          ));
-                        },
+                                      Icon(CupertinoIcons.heart_fill, color: color.greyColor,),
+                                      hSizedBox10,
+                                      Icon(Icons.info_outline, color: color.greyColor,)
+                                    ],
+                                  ),
+                                )
+                              ],
+                            );
+                          },
+                          upSwipeAllowed: false,
+                          onStackFinished: () {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text("No Deals Present"),
+                              duration: Duration(milliseconds: 500),
+                            ));
+                          },
+                        ),
                       ),
                     ),
                   ],
